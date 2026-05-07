@@ -1,0 +1,137 @@
+.orb-container {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all var(--transition-smooth);
+}
+
+.orb-core {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), transparent 70%);
+  box-shadow: 0 0 40px var(--orb-color);
+  z-index: 10;
+  transition: transform 0.1s ease-out;
+}
+
+.orb-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--orb-color);
+  opacity: 0.5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Colors by State */
+.idle { --orb-color: rgba(0, 240, 255, 0.3); }
+.listening { --orb-color: #f87171; }
+.thinking { --orb-color: var(--accent-purple); }
+.speaking { --orb-color: var(--accent-cyan); }
+.automating { --orb-color: var(--accent-blue); }
+.success { --orb-color: var(--accent-green); }
+.error { --orb-color: var(--accent-red); }
+
+/* Idle Animation */
+.idle .orb-core {
+  animation: breathe 4s infinite ease-in-out;
+}
+.idle .ring-1 { width: 140px; height: 140px; animation: breathe 4s infinite ease-in-out reverse; }
+.idle .ring-2, .idle .ring-3 { display: none; }
+
+/* Listening Animation */
+.listening .ring-1 { width: 150px; height: 150px; animation: ripple 1.5s infinite linear; }
+.listening .ring-2 { width: 180px; height: 180px; animation: ripple 1.5s infinite linear 0.5s; }
+.listening .ring-3 { width: 210px; height: 210px; animation: ripple 1.5s infinite linear 1s; }
+
+/* Thinking Animation */
+.thinking .ring-1 { 
+  width: 160px; height: 160px; 
+  border-width: 2px;
+  border-style: dashed;
+  animation: spin 3s infinite linear;
+}
+.thinking .ring-2 {
+  width: 200px; height: 200px;
+  border-top: 2px solid var(--orb-color);
+  border-bottom: 2px solid transparent;
+  animation: spin 2s infinite linear reverse;
+}
+.thinking .ring-3 { display: none; }
+
+/* Automating Animation */
+.automating .orb-core {
+  animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+.automating .ring-1, .automating .ring-2, .automating .ring-3 { display: none; }
+
+.progress-ring {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  transform: rotate(-90deg);
+}
+
+.progress-ring-circle {
+  fill: transparent;
+  stroke: var(--orb-color);
+  stroke-width: 2;
+  stroke-dasharray: 301.59; /* 2 * pi * 48 */
+  stroke-dashoffset: 60; /* Dummy progress */
+  animation: fillProgress 10s linear forwards;
+}
+
+/* Keyframes */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes ripple {
+  0% { width: 120px; height: 120px; opacity: 0.8; }
+  100% { width: 250px; height: 250px; opacity: 0; }
+}
+
+@keyframes spin {
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes fillProgress {
+  from { stroke-dashoffset: 301.59; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* Speaking Animation */
+.speaking .orb-core {
+  animation: speakPulse 1.2s infinite ease-in-out;
+}
+.speaking .ring-1 { width: 150px; height: 150px; animation: speakWave 1.6s infinite ease-in-out; }
+.speaking .ring-2 { width: 180px; height: 180px; animation: speakWave 1.6s infinite ease-in-out 0.3s; }
+.speaking .ring-3 { width: 210px; height: 210px; animation: speakWave 1.6s infinite ease-in-out 0.6s; }
+
+@keyframes speakPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 40px var(--orb-color); }
+  50% { transform: scale(1.08); box-shadow: 0 0 60px var(--orb-color); }
+}
+
+@keyframes speakWave {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* Listening override - red pulsing for mic active */
+.listening .orb-core {
+  animation: listenPulse 0.8s infinite ease-in-out;
+  box-shadow: 0 0 50px #f87171;
+}
+
+@keyframes listenPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}

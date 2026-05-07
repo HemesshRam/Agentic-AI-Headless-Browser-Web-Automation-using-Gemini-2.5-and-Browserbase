@@ -1,0 +1,145 @@
+.splash-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse at center, #0a0f1f 0%, #000000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: splashFadeIn 0.5s ease-out;
+}
+
+@keyframes splashFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Animated Orb */
+.splash-orb {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.splash-orb-core {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(0, 255, 204, 0.9), rgba(0, 150, 255, 0.3) 70%);
+  box-shadow: 0 0 50px rgba(0, 255, 204, 0.4), 0 0 100px rgba(0, 255, 204, 0.15);
+  animation: splashBreathe 3s infinite ease-in-out;
+}
+
+@keyframes splashBreathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 50px rgba(0, 255, 204, 0.4); }
+  50% { transform: scale(1.1); box-shadow: 0 0 80px rgba(0, 255, 204, 0.6); }
+}
+
+.splash-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 255, 204, 0.3);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.splash-ring-1 { width: 100px; height: 100px; animation: splashRipple 3s infinite ease-out; }
+.splash-ring-2 { width: 120px; height: 120px; animation: splashRipple 3s infinite ease-out 0.8s; }
+.splash-ring-3 { width: 140px; height: 140px; animation: splashRipple 3s infinite ease-out 1.6s; }
+
+@keyframes splashRipple {
+  0% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
+}
+
+/* Title */
+.splash-title {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: #00ffcc;
+  text-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+  margin: 0;
+}
+
+.splash-subtitle {
+  font-size: 0.95rem;
+  color: #64748b;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Activate Button */
+.splash-activate-btn {
+  position: relative;
+  margin-top: 30px;
+  padding: 14px 40px;
+  background: transparent;
+  border: 2px solid #00ffcc;
+  border-radius: 50px;
+  color: #00ffcc;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.splash-activate-btn:hover {
+  background: rgba(0, 255, 204, 0.1);
+  box-shadow: 0 0 30px rgba(0, 255, 204, 0.25);
+  transform: scale(1.03);
+}
+
+.splash-activate-btn:active {
+  transform: scale(0.97);
+}
+
+.activate-text {
+  position: relative;
+  z-index: 1;
+}
+
+.activate-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(0, 255, 204, 0.15);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.5s ease;
+}
+
+.splash-activate-btn:hover .activate-glow {
+  width: 300px;
+  height: 300px;
+}
+
+/* Hint */
+.splash-hint {
+  font-size: 0.75rem;
+  color: #475569;
+  margin: 0;
+  margin-top: 8px;
+}

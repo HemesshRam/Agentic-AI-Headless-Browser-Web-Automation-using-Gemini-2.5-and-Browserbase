@@ -1,0 +1,67 @@
+.live-terminal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  color: var(--accent-cyan);
+  margin-bottom: 15px;
+  opacity: 0.8;
+}
+
+.terminal-content {
+  flex: 1;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  padding-right: 10px;
+  position: relative;
+}
+
+.log-line {
+  margin-bottom: 6px;
+  word-break: break-all;
+  animation: fadeIn var(--transition-fast);
+}
+
+.log-time {
+  color: rgba(255, 255, 255, 0.4);
+  margin-right: 10px;
+}
+
+.log-level {
+  display: inline-block;
+  min-width: 60px;
+  margin-right: 10px;
+}
+
+.text-amber { color: var(--accent-amber); }
+.text-white { color: #ffffff; }
+
+/* Subtle scan-line overlay */
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: rgba(0, 240, 255, 0.1);
+  opacity: 0.5;
+  pointer-events: none;
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(800px); } /* arbitrary large value */
+}
