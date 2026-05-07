@@ -68,7 +68,7 @@ Result: { price: "$1,075.90", deliveryDate: "May 13-15" }
 
 3. **Self-Correcting Intelligence** — Detects stuck loops (retyping same query, endless scrolling), blocks duplicate actions, and auto-recovers without human intervention.
 
-4. **Real-Time Observability** — Apple-inspired dashboard with live browser view, step-by-step timeline, screenshot gallery, and AI voice narration.
+4. **Real-Time Observability** — Dynamic dashboard with live browser view, step-by-step timeline, screenshot gallery, and AI voice narration.
 
 5. **Cloud-Native Execution** — Runs on Browserbase cloud browsers with anti-bot stealth, eliminating the need for local Chrome installations or proxy management.
 
@@ -157,10 +157,13 @@ flowchart LR
 
 ---
 
+## Project ZIP File
+https://drive.google.com/file/d/1x5cUdtNt-dhoVlRiFTwrM8iA0t1wvMBg/view?usp=sharing
+
 ## 📁 Project Structure
 
 ```
-web-automation-pro-v6.1/
+browserbase_automation/
 ├── server.js                    # Express + WebSocket server entry point
 ├── package.json                 # Backend dependencies & scripts
 ├── .env                         # Environment configuration (API keys, timeouts)
@@ -220,8 +223,6 @@ web-automation-pro-v6.1/
 
 ---
 
-## Project ZIP File
-https://drive.google.com/file/d/1x5cUdtNt-dhoVlRiFTwrM8iA0t1wvMBg/view?usp=sharing
 ## 🚀 Execution Steps
 
 ### Prerequisites
