@@ -26,7 +26,6 @@
 - [Usage Examples](#-usage-examples)
 - [Advantages](#-advantages)
 - [Limitations](#-limitations)
-- [License](#-license)
 
 ---
 
