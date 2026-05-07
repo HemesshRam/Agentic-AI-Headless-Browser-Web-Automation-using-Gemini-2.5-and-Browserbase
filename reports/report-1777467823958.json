@@ -1,0 +1,17 @@
+{
+  "taskPrompt": "Check the NVIDIA price analysis and provide a summary",
+  "startUrl": "https://finance.yahoo.com",
+  "finalUrl": "https://finance.yahoo.com",
+  "taskComplete": false,
+  "fatalError": "Navigation timeout of 30000 ms exceeded",
+  "stepsExecuted": 0,
+  "maxSteps": 15,
+  "successfulSteps": 0,
+  "failedSteps": 0,
+  "totalDurationMs": 30025,
+  "avgConfidence": 0,
+  "extractedData": {},
+  "actionHistory": [],
+  "timestamp": "2026-04-29T13:03:43.946Z",
+  "pageTitle": ""
+}

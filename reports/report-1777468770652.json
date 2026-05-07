@@ -1,0 +1,54 @@
+{
+  "taskPrompt": "Check the NVIDIA price analysis and provide a summary",
+  "startUrl": "https://finance.yahoo.com",
+  "finalUrl": "https://finance.yahoo.com/",
+  "taskComplete": true,
+  "fatalError": null,
+  "stepsExecuted": 3,
+  "maxSteps": 15,
+  "successfulSteps": 2,
+  "failedSteps": 0,
+  "totalDurationMs": 111439,
+  "avgConfidence": 1,
+  "extractedData": {
+    "Stock": "NVIDIA Corporation (NVDA)",
+    "ClosePrice": "213.17",
+    "CloseChange": "-3.44",
+    "ClosePercentageChange": "-1.59%",
+    "PreMarketPrice": "213.72",
+    "PreMarketChange": "+0.65",
+    "PreMarketPercentageChange": "+0.31%",
+    "Summary": "NVIDIA (NVDA) closed at 213.17, down 3.44 (-1.59%). In pre-market trading, the stock is at 213.72, up 0.65 (+0.31%)."
+  },
+  "actionHistory": [
+    {
+      "step": 1,
+      "action": "type",
+      "selector": "#yfin-usr-qry",
+      "coordinate": null,
+      "success": true,
+      "confidence": 1,
+      "duration": 46781
+    },
+    {
+      "step": 2,
+      "action": "click",
+      "selector": "#yfin-usr-qry-input > div.query-box > div.modules_AlignLeft_27F6D > ul > li:nth-child(1)",
+      "coordinate": {
+        "x": 303,
+        "y": 147
+      },
+      "success": true,
+      "confidence": 1,
+      "duration": 6784
+    },
+    {
+      "step": 3,
+      "action": "done",
+      "duration": 10402,
+      "confidence": 1
+    }
+  ],
+  "timestamp": "2026-04-29T13:19:30.646Z",
+  "pageTitle": "NVIDIA Corporation (NVDA) Stock Price, News, Quote & History - Yahoo Finance"
+}

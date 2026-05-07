@@ -1,0 +1,56 @@
+{
+  "name": "web-automation-pro-v6.1",
+  "version": "6.1.0",
+  "description": "Industrial-Grade Web Automation with Browserbase, Gemini Vision & Computer-Use",
+  "main": "src/main.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/main.js",
+    "dev": "set NODE_ENV=development && set LOG_LEVEL=debug && node src/main.js",
+    "debug": "node --inspect-brk src/main.js",
+    "websites": "set USE_BROWSERBASE=true && set PREFER_COMPUTER_USE=true && node src/main.js",
+    "demoqa": "set DEMOQA_MODE=true && node src/main.js",
+    "test": "node tests/test.js",
+    "clean": "rmdir /s /q logs reports cache 2>nul || echo Already clean",
+    "server": "node server.js",
+    "dev:all": "concurrently \"npm run server\" \"cd frontend && npm run dev\""
+  },
+  "keywords": [
+    "web-automation",
+    "puppeteer",
+    "gemini",
+    "computer-use",
+    "browserbase",
+    "model-config"
+  ],
+  "author": "Professional Developer",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^1.52.0",
+    "axios": "^1.15.2",
+    "cheerio": "^1.0.0",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "groq-sdk": "^1.1.2",
+    "node-cache": "^5.1.2",
+    "p-queue": "^7.3.4",
+    "playwright-core": "^1.59.1",
+    "puppeteer": "^22.15.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "uuid": "^9.0.1",
+    "winston": "^3.19.0",
+    "ws": "^8.20.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.55.0",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}

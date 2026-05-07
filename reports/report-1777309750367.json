@@ -1,0 +1,74 @@
+{
+  "taskPrompt": "Check the NVIDIA price analysis and provide a summary",
+  "startUrl": "https://finance.yahoo.com",
+  "finalUrl": "https://finance.yahoo.com/quote/NVD.DE/",
+  "taskComplete": true,
+  "fatalError": null,
+  "stepsExecuted": 5,
+  "maxSteps": 15,
+  "successfulSteps": 4,
+  "failedSteps": 0,
+  "totalDurationMs": 135383,
+  "avgConfidence": 0.96,
+  "extractedData": {
+    "ticker": "NVD.DE",
+    "company_name": "NVIDIA Corporation",
+    "current_price": "179.18",
+    "currency": "EUR",
+    "change_value": "-0.06",
+    "change_percent": "-0.03%",
+    "close_time": "5:35:38 PM GMT+2"
+  },
+  "actionHistory": [
+    {
+      "step": 1,
+      "action": "type",
+      "selector": "input[placeholder=\"Search for news, tickers or companies...\"]",
+      "coordinate": null,
+      "success": true,
+      "confidence": 0.9,
+      "duration": 38333
+    },
+    {
+      "step": 2,
+      "action": "click",
+      "selector": "li[data-id=\"NVDA\"] > a",
+      "coordinate": {
+        "x": 294,
+        "y": 149
+      },
+      "success": true,
+      "confidence": 0.95,
+      "duration": 9197
+    },
+    {
+      "step": 3,
+      "action": "type",
+      "selector": "input[placeholder=\"Search for news, tickers or companies...\"]",
+      "coordinate": null,
+      "success": true,
+      "confidence": 1,
+      "duration": 42543
+    },
+    {
+      "step": 4,
+      "action": "click",
+      "selector": "li[data-id=\"NVD.DE\"] > a",
+      "coordinate": {
+        "x": 294,
+        "y": 182
+      },
+      "success": true,
+      "confidence": 0.95,
+      "duration": 19258
+    },
+    {
+      "step": 5,
+      "action": "done",
+      "duration": 8713,
+      "confidence": 1
+    }
+  ],
+  "timestamp": "2026-04-27T17:09:10.351Z",
+  "pageTitle": "NVIDIA Corporation (NVD.DE) Stock Price, News, Quote & History - Yahoo Finance"
+}
