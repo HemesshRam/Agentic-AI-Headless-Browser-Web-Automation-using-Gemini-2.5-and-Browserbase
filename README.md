@@ -1,4 +1,4 @@
-# Agentic-AI-Headless-Browser-Web-Automation-using-Gemini-2.5-and-Browserbase
+# Web Automation Pro v6.1
 
 <p align="center">
   <img src="docs/banner.png" alt="Web Automation Pro Banner" width="100%" />
@@ -123,180 +123,42 @@ Result: { price: "$1,075.90", deliveryDate: "May 13-15" }
 
 ## 🏗 Architecture
 
-### High-Level System Architecture
-
 ```mermaid
-flowchart TB
-    subgraph Frontend["🖥️ Frontend (React + Vite)"]
-        UI[AutoPilot Dashboard]
-        CMD[Command Bar]
-        ORB[AI Orb Visualizer]
-        TL[Task Timeline]
-        LT[Live Terminal]
-        LB[Live Browser iFrame]
-        SS[Screenshot Viewer]
-        VOICE[Voice Engine / TTS]
+flowchart LR
+    User([👤 User]) --> CMD[Command Bar]
+
+    subgraph Frontend["🖥️ React Dashboard"]
+        CMD
+        Live[Live View / Timeline / Voice]
     end
 
-    subgraph Backend["⚙️ Backend (Node.js + Express)"]
-        SRV[Server.js - Express + WebSocket]
-        IR[Intent Router - Groq LLaMA]
-        TV[Tavily URL Search]
-        WA[Website Analyzer]
-        TV2[Task Validator]
-        
-        subgraph Orchestrator["🧠 Task Orchestrator (Brain)"]
-            ORCH[Step Loop Controller]
-            GUARD[Stuck Loop Detection]
-            AUTO[Auto-Submit Intelligence]
-            HIST[Rich History Tracker]
-        end
-        
-        subgraph Agents["🤖 AI Agents"]
-            AR[Agent Reasoning Router]
-            VA[Vision Analyzer - Gemini Flash]
-            CUA[Computer-Use Agent - Gemini CU]
-            PB[Prompt Builder]
-        end
-        
-        subgraph Execution["🔧 Execution Layer"]
-            TE[Tool Executor]
-            SM[Scroll Manager]
-            VG[Viewport Guard]
-        end
+    CMD -->|WebSocket| SRV[Express Server]
+
+    subgraph Backend["⚙️ Node.js Backend"]
+        SRV --> INTENT[Intent Router]
+        INTENT --> ORCH[Task Orchestrator]
+        ORCH --> AGENT[AI Agent Router]
+        AGENT --> EXEC[Tool Executor]
+        EXEC --> ORCH
     end
 
-    subgraph Cloud["☁️ Cloud Infrastructure"]
-        BB[Browserbase Cloud Browser]
-        GEMINI[Google Gemini API]
-        GROQ[Groq Cloud API]
-        TAV[Tavily Search API]
-    end
+    INTENT -->|Parse Intent| GROQ[(Groq LLaMA 3.3)]
+    INTENT -->|Find URL| TAV[(Tavily Search)]
+    AGENT -->|Analyze Screenshot| GEMINI[(Gemini 2.5 CU)]
+    EXEC -->|CDP Actions| BB[(Browserbase Cloud)]
+    ORCH -->|Screenshots| BB
 
-    CMD -->|User Prompt| SRV
-    SRV -->|Parse Intent| IR
-    IR -->|LLaMA 3.3| GROQ
-    IR -->|URL Search| TV
-    TV --> TAV
-    SRV -->|Analyze Site| WA
-    SRV -->|Validate Task| TV2
-    SRV -->|Start Automation| ORCH
-    
-    ORCH -->|Screenshot| BB
-    ORCH -->|Analyze Screenshot| AR
-    AR -->|Vision| VA
-    AR -->|Computer-Use| CUA
-    VA --> GEMINI
-    CUA --> GEMINI
-    AR --> PB
-    
-    ORCH -->|Execute Action| TE
-    TE -->|CDP Commands| BB
-    TE --> SM
-    TE --> VG
-    
-    ORCH -->|Guard Checks| GUARD
-    ORCH -->|Post-Type| AUTO
-    ORCH -->|Track Actions| HIST
-    
-    SRV -->|WebSocket Events| UI
-    UI --> ORB
-    UI --> TL
-    UI --> LT
-    UI --> LB
-    UI --> SS
-    UI --> VOICE
-    
-    LB -->|Debug URL iFrame| BB
+    SRV -->|Live Updates| Live
+    BB -->|Live iFrame| Live
+
+    Result([📊 Extracted Data]) --> User
 
     style Frontend fill:#0f172a,stroke:#00ffcc,color:#e2e8f0
     style Backend fill:#1e293b,stroke:#3b82f6,color:#e2e8f0
-    style Cloud fill:#1a1a2e,stroke:#f59e0b,color:#e2e8f0
-    style Orchestrator fill:#0c1426,stroke:#8b5cf6,color:#e2e8f0
-    style Agents fill:#0c1426,stroke:#10b981,color:#e2e8f0
-    style Execution fill:#0c1426,stroke:#ef4444,color:#e2e8f0
-```
-
-### Request Lifecycle
-
-```mermaid
-sequenceDiagram
-    actor User
-    participant FE as Frontend
-    participant SRV as Server
-    participant GROQ as Groq (LLaMA)
-    participant TAV as Tavily
-    participant ORCH as Orchestrator
-    participant GEMINI as Gemini CU
-    participant BB as Browserbase
-
-    User->>FE: "Search iPhone 17 Pro on Amazon"
-    FE->>SRV: POST /api/automate
-    SRV->>GROQ: Parse intent
-    GROQ-->>SRV: { intent: "search", url: "amazon.com" }
-    
-    alt No URL found
-        SRV->>TAV: Search for URL
-        TAV-->>SRV: Best matching URL
-    end
-    
-    SRV->>BB: Create cloud browser session
-    BB-->>SRV: Session ID + Debug URL
-    SRV-->>FE: WS: automation_started + liveViewUrl
-    
-    loop Each Step (1..15)
-        ORCH->>BB: Take screenshot
-        BB-->>ORCH: Screenshot (base64)
-        ORCH->>GEMINI: Analyze screenshot + task prompt
-        GEMINI-->>ORCH: { action: "type", value: "iPhone 17 Pro" }
-        
-        alt Action = type (search input)
-            ORCH->>BB: Execute type action
-            ORCH->>ORCH: Auto-detect search input
-            ORCH->>BB: Auto-press Enter
-            ORCH->>ORCH: Mark search as submitted
-        else Action = click/scroll/etc
-            ORCH->>BB: Execute action via CDP
-        end
-        
-        ORCH-->>FE: WS: step_update + screenshot
-        FE->>FE: Update timeline, metrics, orb
-    end
-    
-    ORCH-->>FE: WS: task_complete + extractedData
-    FE->>User: Display results + voice narration
-```
-
-### Self-Correcting Intelligence Flow
-
-```mermaid
-flowchart TD
-    A[Agent Returns Action] --> B{Action = type?}
-    B -->|No| C[Execute Action Normally]
-    B -->|Yes| D{Already typed this value?}
-    D -->|No| E[Execute Type]
-    E --> F{Is search input?}
-    F -->|No| G[Continue - form field]
-    F -->|Yes| H{Task wants autocomplete?}
-    H -->|Yes| I[Auto-click first suggestion]
-    H -->|No| J[Auto-press Enter]
-    D -->|Yes| K[BLOCK duplicate type]
-    K --> L{Search submitted?}
-    L -->|No| M[Auto-submit search]
-    L -->|Yes| N[Skip - re-evaluate]
-    
-    C --> O{Same action 3x?}
-    O -->|Yes| P[Attempt Recovery]
-    O -->|No| Q[Continue]
-    
-    P --> R{Recovery worked?}
-    R -->|Yes| Q
-    R -->|No| S[Abort with error]
-
-    style D fill:#f59e0b,stroke:#000,color:#000
-    style K fill:#ef4444,stroke:#000,color:#fff
-    style I fill:#10b981,stroke:#000,color:#fff
-    style J fill:#3b82f6,stroke:#000,color:#fff
+    style GROQ fill:#1a1a2e,stroke:#f59e0b,color:#e2e8f0
+    style TAV fill:#1a1a2e,stroke:#f59e0b,color:#e2e8f0
+    style GEMINI fill:#1a1a2e,stroke:#f59e0b,color:#e2e8f0
+    style BB fill:#1a1a2e,stroke:#f59e0b,color:#e2e8f0
 ```
 
 ---
@@ -526,13 +388,16 @@ Requires stable internet connectivity for Gemini API, Groq API, Tavily API, and 
 
 ---
 
-## 📄 License
+## 🏁 Conclusion
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+Web Automation Pro v6.1 demonstrates that **vision-driven AI agents** can replace brittle, selector-based automation with a system that truly *sees* and *understands* web pages — the same way a human does. By combining Gemini's Computer-Use model for visual reasoning, Groq for sub-second intent parsing, and Browserbase for scalable cloud execution, it delivers a framework where users simply describe what they want in plain English and the system handles the rest.
+
+The self-correcting intelligence layer — with stuck-loop detection, duplicate-action guards, and auto-submit logic — addresses the core reliability challenges that make traditional AI automation fragile. Meanwhile, the real-time dashboard provides full transparency into every step, making it suitable for both development and production monitoring.
+
+While limitations remain around authentication, complex form interactions, and API costs at scale, this architecture establishes a strong foundation for the next generation of autonomous web agents — where natural language is the only interface you need.
 
 ---
 
 <p align="center">
   Built with ❤️ using <strong>Google Gemini</strong>, <strong>Browserbase</strong>, <strong>Groq</strong> & <strong>React</strong>
 </p>
-
