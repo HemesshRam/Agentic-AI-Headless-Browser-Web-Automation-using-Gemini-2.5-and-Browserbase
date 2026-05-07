@@ -1,8 +1,4 @@
-# Web Automation Pro v6.1
-
-<p align="center">
-  <img src="docs/banner.png" alt="Web Automation Pro Banner" width="100%" />
-</p>
+# Agentic AI Headless Browser Web Automation using Gemini 2.5 and Browserbase 
 
 <p align="center">
   <strong>Industrial-Grade AI-Powered Browser Automation Framework</strong><br/>
