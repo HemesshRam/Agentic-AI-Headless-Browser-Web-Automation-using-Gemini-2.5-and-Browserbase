@@ -175,6 +175,9 @@ https://drive.google.com/file/d/1x5cUdtNt-dhoVlRiFTwrM8iA0t1wvMBg/view?usp=shari
 browserbase_automation/
 ├── server.js                    # Express + WebSocket server entry point
 ├── package.json                 # Backend dependencies & scripts
+├── Dockerfile                   # Backend Docker configuration
+├── docker-compose.yml           # Multi-container orchestration
+├── .dockerignore                # Docker ignore rules
 ├── .env                         # Environment configuration (API keys, timeouts)
 ├── .env.example                 # Template for environment setup
 ├── .gitignore                   # Git ignore rules
@@ -201,6 +204,7 @@ browserbase_automation/
 │   └── environment-loader.js    # Dynamic environment validation
 │
 ├── frontend/                    # ── React Frontend (Vite) ──
+│   ├── Dockerfile               # Frontend Docker configuration
 │   ├── package.json
 │   ├── vite.config.js
 │   └── src/
@@ -302,29 +306,59 @@ Navigate to `http://localhost:5173` in your browser. Click the splash screen to 
 
 ---
 
-## 🐋 Docker Execution (Recommended)
+## 🐋 Docker Implementation & Usage
 
-The easiest way to run the entire stack with all system dependencies pre-configured is using Docker.
+Using Docker is the **highly recommended** way to run this framework. It encapsulates all complex system-level dependencies required by Puppeteer (like Chromium's Linux dependencies) and ensures the environment is identical across different machines.
 
-### 1. Start the Environment
-Run the following command in the root directory:
-```bash
-docker-compose up --build
-```
+### 🌟 Why Use Docker?
+- **Zero Local Dependencies**: You don't need to install Node.js or system libraries locally.
+- **Pre-configured Puppeteer**: The Docker images include `libnss3`, `libgbm-dev`, and other crucial libraries that often cause "Chromium failed to launch" errors on local systems.
+- **Hot Reloading**: Changes to your local source code are immediately reflected inside the containers via volume mounts.
 
-### 2. Access the Application
-- **Frontend UI**: [http://localhost:5173](http://localhost:5173)
+### 🛠️ Detailed Setup & Execution
+
+#### 1. Configuration
+Ensure your `.env` file is present in the root directory. Docker Compose will automatically inject these variables into both the backend and frontend containers.
+
+#### 2. Access the Application
+Once the containers are running, access the services here:
+- **Main Dashboard**: [http://localhost:5173](http://localhost:5173)
 - **Backend API**: [http://localhost:3001](http://localhost:3001)
 
-### 3. Run Specific Tasks in Docker
-While the containers are running, you can trigger specialized modes:
-```bash
-# Run DemoQA mode
-docker exec -it web-automation-backend npm run demoqa
+#### 3. Lifecycle Commands
+| Action | Command |
+|---|---|
+| **Build & Start** | `docker-compose up --build` |
+| **Stop** | `docker-compose down` |
+| **View All Logs** | `docker-compose logs -f` |
+| **Restart Backend** | `docker-compose restart backend` |
 
-# Run Site-Agnostic mode
-docker exec -it web-automation-backend npm run websites
-```
+#### 4. Advanced Usage (Inside the Container)
+You can execute npm scripts directly inside the running container without stopping the service:
+
+*   **Enter the Backend Shell:**
+    ```bash
+    docker exec -it web-automation-backend bash
+    ```
+*   **Run Connectivity Tests:**
+    ```bash
+    docker exec -it web-automation-backend node test-apis.js
+    ```
+*   **Trigger Specialized Automation:**
+    ```bash
+    # Run automation on DemoQA playground
+    docker exec -it web-automation-backend npm run demoqa
+    ```
+
+### 📁 Volume Persistence
+The `docker-compose.yml` maps your local directory to the container. This means:
+- **Logs**: Found in `./logs` locally after execution.
+- **Screenshots**: Generated in `./cache` are accessible instantly.
+- **Reports**: JSON/HTML reports in `./reports` are saved to your host machine.
+
+### 🧩 Troubleshooting Docker
+- **Port Conflict**: If port `3001` or `5173` is already in use, edit the `ports` section in `docker-compose.yml`.
+- **Permission Errors**: On some Linux systems, ensure the `logs/` and `cache/` directories have write permissions for the Docker user.
 
 ---
 
