@@ -115,44 +115,53 @@ Result: { price: "$1,075.90", deliveryDate: "May 13-15" }
 
 ---
 
-## 🏗 Architecture
+## 🏗️ Architecture
 
 ```mermaid
-flowchart LR
-    User([👤 User]) --> CMD[Command Bar]
-
-    subgraph Frontend["🖥️ React Dashboard"]
-        CMD
-        Live[Live View / Timeline / Voice]
+flowchart TD
+    %% User Interaction
+    User([👤 User]) -- "Natural Language Prompt" --> Dash["🖥️ React Dashboard"]
+    
+    subgraph Frontend["Frontend Layer (React + Vite)"]
+        Dash -- "Input Command" --> WS_Send{{"WebSocket Protocol"}}
     end
 
-    CMD -->|WebSocket| SRV[Express Server]
+    WS_Send -- "Stream Events" --> SRV["⚙️ Express & WS Server"]
 
-    subgraph Backend["⚙️ Node.js Backend"]
-        SRV --> INTENT[Intent Router]
-        INTENT --> ORCH[Task Orchestrator]
-        ORCH --> AGENT[AI Agent Router]
-        AGENT --> EXEC[Tool Executor]
-        EXEC --> ORCH
+    subgraph Backend["Core Intelligence (Node.js)"]
+        SRV --> Intent["🧠 Intent Router"]
+        Intent --> Orchestrator["🎭 Task Orchestrator"]
+        Orchestrator --> AgentRouter["🤖 Agent Reasoning"]
+        AgentRouter --> Tools["🔧 Tool Executor"]
+        
+        %% Feedback Loops
+        Tools -- "Action Result" --> Orchestrator
+        Orchestrator -- "Plan Next Step" --> AgentRouter
     end
 
-    INTENT -->|Parse Intent| GROQ[(Groq LLaMA 3.3)]
-    INTENT -->|Find URL| TAV[(Tavily Search)]
-    AGENT -->|Analyze Screenshot| GEMINI[(Gemini 2.5 CU)]
-    EXEC -->|CDP Actions| BB[(Browserbase Cloud)]
-    ORCH -->|Screenshots| BB
+    %% External AI Services
+    subgraph AI_Services["AI Service Layer"]
+        Intent -- "Parse Goal" --> GROQ["⚡ Groq (LLaMA 3.3)"]
+        Intent -- "Find Target URL" --> TAV["🔎 Tavily Search"]
+        AgentRouter -- "Analyze Screenshots" --> GEMINI["👁️ Gemini 2.5 CU"]
+    end
 
-    SRV -->|Live Updates| Live
-    BB -->|Live iFrame| Live
+    %% Browser Execution
+    subgraph Browser_Cloud["Execution Layer"]
+        Tools -- "Puppeteer/CDP" --> BB["☁️ Browserbase Cloud"]
+        BB -- "Live View / Screenshots" --> Dash
+    end
 
-    Result([📊 Extracted Data]) --> User
+    %% Styling
+    classDef frontend fill:#0f172a,stroke:#00ffcc,color:#e2e8f0,stroke-width:2px
+    classDef backend fill:#1e293b,stroke:#3b82f6,color:#e2e8f0,stroke-width:2px
+    classDef ai fill:#1a1a2e,stroke:#f59e0b,color:#e2e8f0,stroke-dasharray: 5 5
+    classDef cloud fill:#1a1a2e,stroke:#ec4899,color:#e2e8f0
 
-    style Frontend fill:#0f172a,stroke:#00ffcc,color:#e2e8f0
-    style Backend fill:#1e293b,stroke:#3b82f6,color:#e2e8f0
-    style GROQ fill:#1a1a2e,stroke:#f59e0b,color:#e2e8f0
-    style TAV fill:#1a1a2e,stroke:#f59e0b,color:#e2e8f0
-    style GEMINI fill:#1a1a2e,stroke:#f59e0b,color:#e2e8f0
-    style BB fill:#1a1a2e,stroke:#f59e0b,color:#e2e8f0
+    class Dash frontend
+    class SRV,Intent,Orchestrator,AgentRouter,Tools backend
+    class GROQ,TAV,GEMINI ai
+    class BB cloud
 ```
 
 ---
@@ -289,15 +298,35 @@ This launches:
 
 Navigate to `http://localhost:5173` in your browser. Click the splash screen to activate, then type your automation command in the command bar at the bottom.
 
-### Alternative: CLI Mode
-
-```bash
-# Direct CLI execution
-node src/main.js --url "https://www.amazon.com" --task "Search for laptop stand and extract the first product price"
-
-# With Browserbase cloud browser
-npm run websites
 ```
+
+---
+
+## 🐋 Docker Execution (Recommended)
+
+The easiest way to run the entire stack with all system dependencies pre-configured is using Docker.
+
+### 1. Start the Environment
+Run the following command in the root directory:
+```bash
+docker-compose up --build
+```
+
+### 2. Access the Application
+- **Frontend UI**: [http://localhost:5173](http://localhost:5173)
+- **Backend API**: [http://localhost:3001](http://localhost:3001)
+
+### 3. Run Specific Tasks in Docker
+While the containers are running, you can trigger specialized modes:
+```bash
+# Run DemoQA mode
+docker exec -it web-automation-backend npm run demoqa
+
+# Run Site-Agnostic mode
+docker exec -it web-automation-backend npm run websites
+```
+
+---
 
 ---
 
