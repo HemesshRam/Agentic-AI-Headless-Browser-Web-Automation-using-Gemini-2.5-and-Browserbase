@@ -19,12 +19,13 @@
 - [Description](#-description)
 - [Key Objectives](#-key-objectives)
 - [Technical Stack](#-technical-stack)
-- [Architecture](#-architecture)
+- [Architecture](#️-architecture)
 - [Project Structure](#-project-structure)
 - [Execution Steps](#-execution-steps)
+- [Dockerization Strategy](#-dockerization-strategy)
 - [Usage Examples](#-usage-examples)
 - [Advantages](#-advantages)
-- [Limitations](#-limitations)
+- [Limitations](#️-limitations)
 
 ---
 
@@ -247,8 +248,8 @@ browserbase_automation/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/web-automation-pro-v6.1.git
-cd web-automation-pro-v6.1
+git clone https://github.com/your-username/browserbase_automation.git
+cd browserbase_automation
 ```
 
 ### 2. Install Dependencies
@@ -287,80 +288,69 @@ GROQ_API_KEY=your_groq_api_key
 TAVILY_API_KEY=your_tavily_api_key
 ```
 
-### 4. Start the Application
+---
 
+## 🐳 Dockerization Strategy
+
+The project is fully containerized using **Docker** and **Docker Compose** to provide a seamless, "one-click" developer experience. This eliminates the "it works on my machine" problem by standardizing the OS environment and all system-level dependencies.
+
+---
+
+### 🌟 Key Advantages
+
+> [!TIP]
+> **Zero Local Setup**: All system-level libraries for Puppeteer (Chromium) are pre-baked into the image.
+
+*   **⚡ Rapid Deployment**: Start the full stack (Frontend + Backend) with a single command.
+*   **🔄 Live Development**: Source code is mounted via volumes, allowing for **Hot Reloading** inside the container.
+*   **🛠️ Pre-configured Environment**: No need to install Node.js, npm, or system-level Chromium dependencies on your host machine.
+
+---
+
+### 🚀 Getting Started with Docker
+
+#### 1️⃣ Environment Configuration
+Ensure your `.env` file is ready in the root folder. Docker Compose automatically maps these variables into the containers.
+
+#### 2️⃣ Spin Up the Stack
+Run this from the project root:
 ```bash
-# Start both backend server and frontend dev server
-npm run dev:all
+docker-compose up --build
 ```
 
-This launches:
-- **Backend**: `http://localhost:3001` (Express + WebSocket)
-- **Frontend**: `http://localhost:5173` (Vite dev server)
-
-### 5. Open the Dashboard
-
-Navigate to `http://localhost:5173` in your browser. Click the splash screen to activate, then type your automation command in the command bar at the bottom.
-
-```
+#### 3️⃣ Access Points
+| Service | Access URL | Description |
+| :--- | :--- | :--- |
+| **Frontend UI** | [http://localhost:5173](http://localhost:5173) | Main dashboard for triggering tasks. |
+| **Backend API** | [http://localhost:3001](http://localhost:3001) | WebSocket & REST API server. |
 
 ---
 
-## 🐋 Docker Implementation & Usage
+### 🔧 Operational Commands
 
-Using Docker is the **highly recommended** way to run this framework. It encapsulates all complex system-level dependencies required by Puppeteer (like Chromium's Linux dependencies) and ensures the environment is identical across different machines.
+Use these commands to manage your environment efficiently:
 
-### 🌟 Why Use Docker?
-- **Zero Local Dependencies**: You don't need to install Node.js or system libraries locally.
-- **Pre-configured Puppeteer**: The Docker images include `libnss3`, `libgbm-dev`, and other crucial libraries that often cause "Chromium failed to launch" errors on local systems.
-- **Hot Reloading**: Changes to your local source code are immediately reflected inside the containers via volume mounts.
-
-### 🛠️ Detailed Setup & Execution
-
-#### 1. Configuration
-Ensure your `.env` file is present in the root directory. Docker Compose will automatically inject these variables into both the backend and frontend containers.
-
-#### 2. Access the Application
-Once the containers are running, access the services here:
-- **Main Dashboard**: [http://localhost:5173](http://localhost:5173)
-- **Backend API**: [http://localhost:3001](http://localhost:3001)
-
-#### 3. Lifecycle Commands
-| Action | Command |
-|---|---|
-| **Build & Start** | `docker-compose up --build` |
-| **Stop** | `docker-compose down` |
-| **View All Logs** | `docker-compose logs -f` |
-| **Restart Backend** | `docker-compose restart backend` |
-
-#### 4. Advanced Usage (Inside the Container)
-You can execute npm scripts directly inside the running container without stopping the service:
-
-*   **Enter the Backend Shell:**
-    ```bash
-    docker exec -it web-automation-backend bash
-    ```
-*   **Run Connectivity Tests:**
-    ```bash
-    docker exec -it web-automation-backend node test-apis.js
-    ```
-*   **Trigger Specialized Automation:**
-    ```bash
-    # Run automation on DemoQA playground
-    docker exec -it web-automation-backend npm run demoqa
-    ```
-
-### 📁 Volume Persistence
-The `docker-compose.yml` maps your local directory to the container. This means:
-- **Logs**: Found in `./logs` locally after execution.
-- **Screenshots**: Generated in `./cache` are accessible instantly.
-- **Reports**: JSON/HTML reports in `./reports` are saved to your host machine.
-
-### 🧩 Troubleshooting Docker
-- **Port Conflict**: If port `3001` or `5173` is already in use, edit the `ports` section in `docker-compose.yml`.
-- **Permission Errors**: On some Linux systems, ensure the `logs/` and `cache/` directories have write permissions for the Docker user.
+| Task | Command |
+| :--- | :--- |
+| **Shutdown** | `docker-compose down` |
+| **Streaming Logs** | `docker-compose logs -f` |
+| **Run DemoQA Test** | `docker exec -it web-automation-backend npm run demoqa` |
+| **Run CLI Automation** | `docker exec -it web-automation-backend npm run websites` |
+| **Enter Shell** | `docker exec -it web-automation-backend bash` |
 
 ---
+
+### 📁 Data & Persistence
+Your local filesystem is mirrored inside the container. Generated artifacts are immediately accessible on your host machine:
+*   📂 **`logs/`** — Real-time execution logs.
+*   🖼️ **`cache/`** — Screenshots captured during automation.
+*   📊 **`reports/`** — Detailed task execution analysis.
+
+---
+
+### 💡 Troubleshooting
+*   **Port Conflicts**: If port `3001` or `5173` is taken, update the `ports` section in `docker-compose.yml`.
+*   **Resource Limits**: Ensure Docker Desktop has at least 4GB of RAM allocated for smooth browser execution.
 
 ---
 
