@@ -224,7 +224,7 @@ browserbase_automation/
 │       │   ├── TaskTimeline.jsx/css  # Step timeline with status indicators
 │       │   └── WelcomeSplash.jsx/css # Activation splash screen
 │       └── services/
-│           └── VoiceEngine.js       # Browser TTS with J.A.R.V.I.S.-style narration
+│           └── VoiceEngine.js       # Browser TTS with effective narration
 │
 ├── cache/                       # Screenshot cache (auto-generated)
 ├── logs/                        # Winston log files (auto-generated)
