@@ -440,7 +440,7 @@ Requires stable internet connectivity for Gemini API, Groq API, Tavily API, and 
 
 ## 🏁 Conclusion
 
-Web Automation Pro v6.1 demonstrates that **vision-driven AI agents** can replace brittle, selector-based automation with a system that truly *sees* and *understands* web pages — the same way a human does. By combining Gemini's Computer-Use model for visual reasoning, Groq for sub-second intent parsing, and Browserbase for scalable cloud execution, it delivers a framework where users simply describe what they want in plain English and the system handles the rest.
+Hence, this project demonstrates that **vision-driven AI agents** can replace brittle, selector-based automation with a system that truly *sees* and *understands* web pages — the same way a human does. By combining Gemini's Computer-Use model for visual reasoning, Groq for sub-second intent parsing, and Browserbase for scalable cloud execution, it delivers a framework where users simply describe what they want in plain English and the system handles the rest.
 
 The self-correcting intelligence layer — with stuck-loop detection, duplicate-action guards, and auto-submit logic — addresses the core reliability challenges that make traditional AI automation fragile. Meanwhile, the real-time dashboard provides full transparency into every step, making it suitable for both development and production monitoring.
 
