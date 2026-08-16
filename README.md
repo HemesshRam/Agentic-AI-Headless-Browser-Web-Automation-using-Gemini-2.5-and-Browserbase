@@ -448,6 +448,4 @@ While limitations remain around authentication, complex form interactions, and A
 
 ---
 
-<p align="center">
-  Built with ❤️ using <strong>Google Gemini</strong>, <strong>Browserbase</strong>, <strong>Groq</strong> & <strong>React</strong>
-</p>
+
